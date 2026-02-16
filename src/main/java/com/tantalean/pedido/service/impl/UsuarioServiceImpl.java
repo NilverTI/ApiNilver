@@ -1,6 +1,8 @@
 package com.tantalean.pedido.service.impl;
 
+import com.tantalean.pedido.dto.UsuarioResponseDTO;
 import com.tantalean.pedido.entity.Usuario;
+import com.tantalean.pedido.mapper.UsuarioMapper;
 import com.tantalean.pedido.repository.UsuarioRepository;
 import com.tantalean.pedido.service.UsuarioService;
 
@@ -16,36 +18,45 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private UsuarioRepository repository;
 
+    @Autowired
+    private UsuarioMapper mapper; // ✅ era rolRepository (mal)
+
     @Override
     @Transactional(readOnly = true)
-    public Page<Usuario> findAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<UsuarioResponseDTO> findAll(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(mapper::toDTO);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Usuario> search(String texto, Pageable pageable) {
+    public Page<UsuarioResponseDTO> search(String texto, Pageable pageable) {
         if (texto == null || texto.isBlank()) {
-            return repository.findAll(pageable);
+            return repository.findAll(pageable).map(mapper::toDTO);
         }
-        return repository.findByUsernameContainingIgnoreCase(texto, pageable);
+        return repository.findByUsernameContainingIgnoreCase(texto, pageable)
+                .map(mapper::toDTO);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Usuario findById(Long id) {
-        return repository.findById(id).orElseThrow();
+    public UsuarioResponseDTO findById(Long id) {
+        Usuario entity = repository.findById(id).orElseThrow();
+        return mapper.toDTO(entity);
     }
 
     @Override
-    public Usuario create(Usuario usuario) {
+    @Transactional
+    public UsuarioResponseDTO create(Usuario usuario) {
         usuario.setId(null);
-        return repository.save(usuario);
+        Usuario saved = repository.save(usuario);
+        return mapper.toDTO(saved);
     }
 
     @Override
-    public Usuario update(Long id, Usuario usuario) {
-        Usuario existente = findById(id);
+    @Transactional
+    public UsuarioResponseDTO update(Long id, Usuario usuario) {
+        Usuario existente = repository.findById(id).orElseThrow();
 
         existente.setUsername(usuario.getUsername());
         existente.setEmail(usuario.getEmail());
@@ -53,10 +64,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         existente.setActivo(usuario.isActivo());
         existente.setRoles(usuario.getRoles());
 
-        return repository.save(existente);
+        Usuario saved = repository.save(existente);
+        return mapper.toDTO(saved);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
