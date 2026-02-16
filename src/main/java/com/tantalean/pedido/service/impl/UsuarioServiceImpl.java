@@ -19,7 +19,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UsuarioRepository repository;
 
     @Autowired
-    private UsuarioMapper mapper; // ✅ era rolRepository (mal)
+    private UsuarioMapper mapper; 
 
     @Override
     @Transactional(readOnly = true)
