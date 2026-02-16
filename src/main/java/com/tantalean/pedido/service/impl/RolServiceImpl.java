@@ -1,29 +1,30 @@
 package com.tantalean.pedido.service.impl;
 
+import com.tantalean.pedido.entity.Rol;
+import com.tantalean.pedido.repository.RolRepository;
+import com.tantalean.pedido.service.RolService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.tantalean.pedido.entity.Producto;
-import com.tantalean.pedido.service.ProductService;
-import com.tantalean.pedido.repository.ProductoRepository;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class RolServiceImpl implements RolService {
 
     @Autowired
-    private ProductoRepository repository;
+    private RolRepository repository;
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Producto> findAll(Pageable pageable) {
+    public Page<Rol> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Producto> search(String texto, Pageable pageable) {
+    public Page<Rol> search(String texto, Pageable pageable) {
         if (texto == null || texto.isBlank()) {
             return repository.findAll(pageable);
         }
@@ -32,28 +33,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public Producto findById(Long id) {
+    public Rol findById(Long id) {
         return repository.findById(id).orElseThrow();
     }
 
     @Override
     @Transactional
-    public Producto create(Producto producto) {
-        producto.setId(null);
-        return repository.save(producto);
+    public Rol create(Rol rol) {
+        rol.setId(null);
+        return repository.save(rol);
     }
 
     @Override
     @Transactional
-    public Producto update(Long id, Producto producto) {
-        
-        Producto updated = findById(id);
-
-        updated.setNombre(producto.getNombre());
-        updated.setDescripcion(producto.getDescripcion());
-        updated.setCodigo(producto.getCodigo());
-        updated.setPrecioUnitario(producto.getPrecioUnitario());
-        return repository.save(updated);
+    public Rol update(Long id, Rol rol) {
+        Rol existente = findById(id);
+        existente.setNombre(rol.getNombre());
+        existente.setDescripcion(rol.getDescripcion());
+        return repository.save(existente);
     }
 
     @Override

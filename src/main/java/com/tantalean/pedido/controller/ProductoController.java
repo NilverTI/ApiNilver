@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tantalean.pedido.entity.Producto;
-import com.tantalean.pedido.service.ProductService;
+import com.tantalean.pedido.service.ProductoService;
 
 @RestController
 @RequestMapping("/api/products")
-public class ProductController {
+public class ProductoController {
 
     @Autowired
-    private ProductService service;
+    private ProductoService service;
 
     @GetMapping
     public Page<Producto> getAll(

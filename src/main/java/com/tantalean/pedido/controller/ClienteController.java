@@ -12,7 +12,7 @@ import com.tantalean.pedido.service.ClienteService;
 
 @RestController
 @RequestMapping("/api/clientes")
-public class ClientetController {
+public class ClienteController {
 
     @Autowired
     private ClienteService service;
