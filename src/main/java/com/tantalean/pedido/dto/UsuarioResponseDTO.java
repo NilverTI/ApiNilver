@@ -4,11 +4,9 @@ import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
+@AllArgsConstructor
 public class UsuarioResponseDTO {
     private Long id;
     private String username;

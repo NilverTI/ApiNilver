@@ -3,7 +3,6 @@ package com.tantalean.pedido.controller;
 import com.tantalean.pedido.dto.UsuarioResponseDTO;
 import com.tantalean.pedido.entity.Usuario;
 import com.tantalean.pedido.service.UsuarioService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
-
     @Autowired
     private UsuarioService service;
 
@@ -47,4 +45,5 @@ public class UsuarioController {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
 }

@@ -7,14 +7,9 @@ import lombok.Data;
 @Entity
 @Table(name = "roles")
 public class Rol {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(unique = true, nullable = false, length = 30)
+    @Column(nullable = false, length=100)
     private String nombre;
-
-    @Column(length = 120)
-    private String descripcion;
 }

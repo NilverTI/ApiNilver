@@ -1,25 +1,21 @@
 package com.tantalean.pedido.controller;
 
+import com.tantalean.pedido.entity.Producto;
+import com.tantalean.pedido.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.tantalean.pedido.entity.Producto;
-import com.tantalean.pedido.service.ProductoService;
+//localhost:8081/api/productos
+//http://localhost:8081/api/productos?page=1&size=4&search=laptop
+//http://localhost:8081/api/productos?search=laptop
+//http://localhost:8081/api/productos?search=laptop&page=0&size=5&sort=precioUnitario,desc
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/productos")
 public class ProductoController {
 
     @Autowired
@@ -28,7 +24,7 @@ public class ProductoController {
     @GetMapping
     public Page<Producto> getAll(
             @RequestParam(required = false) String search,
-            @PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable
+            @PageableDefault(size = 10, sort = "id") Pageable pageable
     ) {
         return service.search(search, pageable);
     }

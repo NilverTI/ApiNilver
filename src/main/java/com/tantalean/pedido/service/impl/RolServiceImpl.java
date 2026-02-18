@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RolServiceImpl implements RolService {
-
     @Autowired
     private RolRepository repository;
 
@@ -38,23 +37,19 @@ public class RolServiceImpl implements RolService {
     }
 
     @Override
-    @Transactional
     public Rol create(Rol rol) {
         rol.setId(null);
         return repository.save(rol);
     }
 
     @Override
-    @Transactional
     public Rol update(Long id, Rol rol) {
-        Rol existente = findById(id);
+        Rol existente=findById(id);
         existente.setNombre(rol.getNombre());
-        existente.setDescripcion(rol.getDescripcion());
         return repository.save(existente);
     }
 
     @Override
-    @Transactional
     public void deleteById(Long id) {
         repository.deleteById(id);
     }

@@ -1,13 +1,15 @@
 package com.tantalean.pedido.service.impl;
 
+import com.tantalean.pedido.service.ProductoService;
+import com.tantalean.pedido.entity.Producto;
+import com.tantalean.pedido.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.tantalean.pedido.entity.Producto;
-import com.tantalean.pedido.service.ProductoService;
-import com.tantalean.pedido.repository.ProductoRepository;
+
+import java.util.Optional;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {
@@ -46,15 +48,14 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     @Transactional
     public Producto update(Long id, Producto producto) {
-        
-        Producto updated = findById(id);
-
-        updated.setNombre(producto.getNombre());
-        updated.setDescripcion(producto.getDescripcion());
-        updated.setCodigo(producto.getCodigo());
-        updated.setPrecioUnitario(producto.getPrecioUnitario());
-        return repository.save(updated);
+        Producto existente=findById(id);
+        existente.setNombre(producto.getNombre());
+        existente.setDescripcion(producto.getDescripcion());
+        existente.setCodigo(producto.getCodigo());
+        existente.setPrecioUnitario(producto.getPrecioUnitario());
+        return repository.save(existente);
     }
+
 
     @Override
     @Transactional

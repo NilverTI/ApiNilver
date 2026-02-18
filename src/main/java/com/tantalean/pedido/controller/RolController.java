@@ -6,48 +6,44 @@ import com.tantalean.pedido.service.RolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/roles")
+@RequestMapping("/api/roles")
 public class RolController {
 
     @Autowired
     private RolService service;
 
-    // GET /roles?page=0&size=10&sort=nombre,asc
     @GetMapping
-    public Page<Rol> findAll(Pageable pageable) {
-        return service.findAll(pageable);
+    public Page<Rol> getAll(
+            @RequestParam(required = false) String search,
+            @PageableDefault(size = 10, sort = "id") Pageable pageable
+    ) {
+        return service.search(search, pageable);
     }
 
-    // GET /roles/search?texto=adm&page=0&size=10
-    @GetMapping("/search")
-    public Page<Rol> search(@RequestParam(required = false) String texto, Pageable pageable) {
-        return service.search(texto, pageable);
-    }
-
-    // GET /roles/1
     @GetMapping("/{id}")
-    public Rol findById(@PathVariable Long id) {
+    public Rol getById(@PathVariable Long id) {
         return service.findById(id);
     }
 
-    // POST /roles
     @PostMapping
-    public Rol create(@RequestBody Rol rol) {
-        return service.create(rol);
+    public ResponseEntity<Rol> create(@RequestBody Rol rol) {
+        Rol created = service.create(rol);
+        return ResponseEntity.status(201).body(created);
     }
 
-    // PUT /roles/1
     @PutMapping("/{id}")
-    public Rol update(@PathVariable Long id, @RequestBody Rol rol) {
-        return service.update(id, rol);
+    public ResponseEntity<Rol> update(@PathVariable Long id, @RequestBody Rol rol) {
+        return ResponseEntity.ok(service.update(id, rol));
     }
 
-    // DELETE /roles/1
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
